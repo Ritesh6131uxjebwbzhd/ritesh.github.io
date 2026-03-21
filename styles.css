@@ -1,0 +1,324 @@
+@import url("https://fonts.googleapis.com/css2?family=Baloo+Bhai+2:wght@600;700;800&display=swap");
+
+:root{
+  --bg0:#0b1220;
+  --bg1:#0f1b33;
+  --card:rgba(255,255,255,.06);
+  --card2:rgba(255,255,255,.09);
+  --text:#eaf0ff;
+  --muted:rgba(234,240,255,.72);
+  --line:rgba(234,240,255,.14);
+  --accent:#7c5cff;
+  --accent2:#2fe0b1;
+  --shadow:0 16px 40px rgba(0,0,0,.35);
+  --radius:16px;
+
+  --ring: 0 0 0 3px rgba(47,224,177,.28);
+  --glass: rgba(15,27,51,.55);
+  --glass2: rgba(255,255,255,.08);
+  --glass3: rgba(255,255,255,.12);
+  --shadow2: 0 22px 70px rgba(0,0,0,.45);
+}
+
+*{ box-sizing:border-box; }
+html{
+  scroll-behavior:smooth;
+  background: linear-gradient(180deg, var(--bg0), var(--bg1)); /* base layer */
+  color-scheme: dark;
+}
+html{ scroll-behavior:smooth; }
+body{
+  margin:0;
+  color:var(--text);
+  font:16px/1.65 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  position: relative;
+  min-height: 100vh;
+  isolation: isolate; /* enables z-index:-1 pseudo-element behind content */
+  overflow-x: hidden;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  background: transparent; /* let the animated layer be visible */
+}
+
+body > *{
+  position: relative;
+  z-index: 1; /* keep all content above animated background */
+}
+
+/* animated background layer (continuous + visible) */
+body::before{
+  content:"";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+
+  background:
+    radial-gradient(1200px 600px at 20% 0%, rgba(124,92,255,.35), transparent 60%),
+    radial-gradient(1000px 600px at 80% 10%, rgba(47,224,177,.18), transparent 55%),
+    linear-gradient(180deg, var(--bg0), var(--bg1));
+
+  /* slightly richer, smoother look */
+  filter: saturate(1.12) contrast(1.22) brightness(.92);
+  transform-origin: 50% 50%;
+  will-change: transform;
+
+  /* continuous loop (no alternate) */
+  animation: bg-drift 26s linear infinite;
+}
+
+@keyframes bg-drift{
+  0%   { transform: translate3d(-2.2%, -1.2%, 0) scale(1.10) rotate(0deg); }
+  50%  { transform: translate3d( 2.2%,  1.2%, 0) scale(1.14) rotate(180deg); }
+  100% { transform: translate3d(-2.2%, -1.2%, 0) scale(1.10) rotate(360deg); } /* seamless */
+}
+
+a{ color:inherit; text-decoration:none; }
+a:hover{ text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; }
+a:focus-visible{ box-shadow: var(--ring); }
+
+.container{
+  width:min(1000px, calc(100% - 32px));
+  margin:20px auto 56px;
+  padding:22px;
+  background: linear-gradient(180deg, var(--glass2), rgba(255,255,255,.03));
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  box-shadow: var(--shadow2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease;
+}
+.container:hover{
+  transform: translateY(-2px);
+  border-color: rgba(234,240,255,.22);
+  background: linear-gradient(180deg, var(--glass3), rgba(255,255,255,.035));
+}
+
+#heading{
+  padding:28px 16px 8px;
+  text-align:center;
+  font-weight:800;
+  letter-spacing:.14em;
+  font-size:clamp(26px, 3.3vw, 44px);
+  text-transform:uppercase;
+  font-family: "Baloo Bhai 2", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  margin-inline: auto; /* centers the fit-content heading block */
+}
+
+#tagline{
+  text-align:center;
+  margin:0 16px 14px;
+  color:var(--muted);
+  font-weight:600;
+}
+
+#navbar{
+  position:sticky;
+  top:0;
+  z-index:50;
+  margin:10px auto 6px;
+  width:min(1000px, calc(100% - 32px));
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  padding:10px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background: rgba(15,27,51,.62);
+  border-color: rgba(234,240,255,.18);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow:0 10px 30px rgba(0,0,0,.25);
+}
+
+#navbar a{
+  position:relative;
+  padding:10px 14px;
+  border-radius:999px;
+  color:rgba(234,240,255,.88);
+  font-weight:700;
+  letter-spacing:.02em;
+  transition: transform .15s ease, background-color .15s ease, color .15s ease;
+}
+
+#navbar a:hover{
+  transform: translateY(-1px);
+  background:linear-gradient(135deg, rgba(124,92,255,.28), rgba(47,224,177,.16));
+  color:var(--text);
+}
+#navbar a:focus-visible{
+  box-shadow: var(--ring);
+}
+
+#navbar a::after{
+  content:"";
+  position:absolute;
+  left:14px;
+  right:14px;
+  bottom:7px;
+  height:2px;
+  background:linear-gradient(90deg, var(--accent), var(--accent2));
+  opacity:0;
+  transform:scaleX(.6);
+  transition: opacity .15s ease, transform .15s ease;
+  border-radius:2px;
+}
+#navbar a:hover::after{ opacity:1; transform:scaleX(1); }
+
+h1, h2, h3{
+  font-family: "Baloo Bhai 2", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+
+  /* changed: remove auto animation; use hover transitions instead */
+  animation: none;
+  transform-origin: 50% 100%;
+
+  transition:
+    transform 180ms ease,
+    letter-spacing 180ms ease,
+    text-shadow 180ms ease,
+    color 180ms ease;
+
+  /* changed: keep block flow, but make hover/underline only as wide as the text */
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+
+  text-rendering: geometricPrecision;
+}
+
+/* changed: hover/focus effect for headings */
+h1:hover, h2:hover, h3:hover,
+h1:focus-visible, h2:focus-visible, h3:focus-visible{
+  transform: translateY(-2px);
+  letter-spacing: .03em;
+  text-shadow:
+    0 10px 24px rgba(0,0,0,.35),
+    0 0 18px rgba(124,92,255,.25);
+}
+
+/* optional: a subtle gradient underline on hover (doesn't affect layout) */
+h1, h2, h3{
+  background-image: linear-gradient(90deg, var(--accent), var(--accent2));
+  background-size: 0% 2px;
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+
+  /* changed: ensure underline has a little room under the glyphs */
+  padding-bottom: 2px;
+}
+h1:hover, h2:hover, h3:hover,
+h1:focus-visible, h2:focus-visible, h3:focus-visible{
+  background-size: 100% 2px;
+}
+
+/* changed: keep reduced-motion support (also disables hover motion) */
+@media (prefers-reduced-motion: reduce){
+  h1, h2, h3{
+    transition: none !important;
+    transform: none !important;
+    text-shadow: none !important;
+    background-size: 0% 2px !important;
+  }
+}
+
+h2{
+  margin:20px 0 10px;
+  font-size:clamp(18px, 2.2vw, 26px);
+  letter-spacing:.02em;
+}
+h3{
+  margin:14px 0 8px;
+  font-size:clamp(16px, 1.9vw, 20px);
+  color:rgba(234,240,255,.92);
+}
+
+p{
+  margin:8px 0;
+  color:rgba(234,240,255,.86);
+
+  /* changed: new paragraph font style (serif/reading) */
+  font-family: ui-serif, Georgia, "Times New Roman", Times, serif;
+  font-size: 1.02rem;
+  line-height: 1.8;
+  letter-spacing: .015em;
+}
+
+strong{ color:var(--text); }
+
+ul{
+  margin:8px 0 14px 20px;
+  padding:0;
+}
+li{ margin:6px 0; color:rgba(234,240,255,.86); }
+
+table{
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0;
+  margin:12px 0 18px;
+  overflow:hidden;
+  border-radius:14px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.04);
+}
+
+caption{
+  caption-side:top;
+  padding:12px 10px;
+  font-weight:800;
+  color:rgba(234,240,255,.9);
+}
+
+th, td{
+  padding:12px 10px;
+  border-bottom:1px solid var(--line);
+  border-right:1px solid var(--line);
+  text-align:center;
+  vertical-align:middle;
+}
+tr:last-child td{ border-bottom:none; }
+th:last-child, td:last-child{ border-right:none; }
+
+th{
+  background:linear-gradient(180deg, rgba(124,92,255,.22), rgba(255,255,255,.03));
+  font-weight:800;
+}
+
+#peer + table td{
+  text-align:left;
+  padding:14px 14px;
+  color:rgba(234,240,255,.9);
+}
+
+/* subtle row striping for readability */
+table tr:nth-child(even) td{ background:rgba(255,255,255,.03); }
+
+/* timetable row classes (kept, but make them tasteful) */
+.a td{ background:rgba(124,92,255,.08); }
+.b td{ background:rgba(47,224,177,.06); }
+.c td{ background:rgba(124,92,255,.06); }
+.d td{ background:rgba(47,224,177,.05); }
+.e td{ background:rgba(255,255,255,.03); }
+.f td{ background:rgba(124,92,255,.05); }
+
+.table-wrap{
+  overflow:auto;
+  border-radius:14px;
+}
+
+/* responsive */
+@media (max-width: 640px){
+  #navbar{ justify-content:space-between; gap:6px; padding:8px; border-radius:16px; }
+  #navbar a{ padding:10px 10px; font-size:14px; }
+  .container{ padding:16px; }
+  th, td{ padding:10px 8px; font-size:14px; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  /* ...existing code... */
+  body::before{ animation: none !important; }
+  .container{ transition: none !important; transform: none !important; }
+}

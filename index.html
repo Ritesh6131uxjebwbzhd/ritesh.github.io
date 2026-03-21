@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Portfolio & Time Table</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- fix: remove newline in href -->
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+      /* replace import: add a new display font for the H1 */
+      @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Bebas+Neue&display=swap");
+
+      /* Navbar font styling */
+      #navbar{
+        font-family: "Space Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+
+        /* Animated background layers */
+        overflow: hidden;
+        isolation: isolate; /* keeps negative z-index pseudos behind only this element */
+        background: rgba(15,27,51,.35); /* base tint (keeps blur/glass feel) */
+        border-color: rgba(234,240,255,.18);
+      }
+
+      #navbar a{ font-family: inherit; }
+
+      /* Continuous moving/rotating glow */
+      #navbar::before{
+        content:"";
+        position:absolute;
+        inset:-45%;
+        background: conic-gradient(
+          from 180deg,
+          rgba(124,92,255,.60),
+          rgba(47,224,177,.38),
+          rgba(124,92,255,.60)
+        );
+        animation: nav-spin 7s linear infinite;
+        filter: blur(18px) saturate(150%);
+        opacity: .95;
+        z-index: -2;
+        pointer-events: none;
+      }
+
+      /* Glass overlay so animation stays “in the background” */
+      #navbar::after{
+        content:"";
+        position:absolute;
+        inset:1px;
+        border-radius: inherit;
+        background: rgba(15,27,51,.72);
+        z-index: -1;
+        pointer-events: none;
+      }
+
+      @keyframes nav-spin{
+        to{ transform: rotate(360deg); }
+      }
+
+      @media (prefers-reduced-motion: reduce){
+        #navbar::before{ animation: none !important; }
+      }
+
+      /* changed: make li and td typography match <p> from styles.css */
+      li, td{
+        font-family: ui-serif, Georgia, "Times New Roman", Times, serif;
+        font-size: 1.02rem;
+        line-height: 1.8;
+        letter-spacing: .015em;
+      }
+
+      /* added: subtle animations for <p>, <li>, <td> */
+      @keyframes micro-lift{
+        from{ transform: translateY(0); }
+        60%{ transform: translateY(-2px); }
+        to{ transform: translateY(-1px); }
+      }
+
+      p, li, td{
+        transition:
+          transform 180ms ease,
+          text-shadow 180ms ease,
+          color 180ms ease,
+          background-color 180ms ease,
+          box-shadow 180ms ease;
+        will-change: transform;
+      }
+
+      p:hover, li:hover{
+        animation: micro-lift 220ms ease-out both;
+        text-shadow:
+          0 10px 24px rgba(0,0,0,.28),
+          0 0 18px rgba(124,92,255,.18);
+      }
+
+      td:hover{
+        animation: micro-lift 220ms ease-out both;
+        background-color: rgba(124,92,255,.08);
+        box-shadow: inset 0 0 0 1px rgba(234,240,255,.10);
+      }
+
+      /* ===== Heading (h1#heading) enhanced styling + animation ===== */
+      #heading{
+        position: relative;
+        isolation: isolate;
+        width: fit-content;
+        max-width: min(92vw, 1000px);
+        margin: 26px auto 10px;
+        padding: 14px 20px 12px;
+        border-radius: 999px;
+
+        /* keep your existing font setup from styles.css, just enhance visuals here */
+        border: 1px solid rgba(255,255,255,.16);
+        background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+        box-shadow: 0 18px 55px rgba(0,0,0,.35);
+
+        /* change: new font (more “display”) */
+        font-family: "Bebas Neue", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+        font-weight: 400;
+        letter-spacing: .22em;
+
+        /* change: new color (fallback) */
+        color: #ffe08a;
+
+        /* optional: a touch more contrast on bright backgrounds */
+        -webkit-text-stroke: .4px rgba(0,0,0,.25);
+
+        /* change: glow tuned to new palette */
+        text-shadow:
+          0 14px 36px rgba(0,0,0,.45),
+          0 0 26px rgba(255,122,217,.22),
+          0 0 18px rgba(103,232,249,.16);
+
+        /* gentle, continuous motion */
+        animation:
+          heading-float 6s ease-in-out infinite,
+          heading-glow 3.2s ease-in-out infinite;
+        will-change: transform, filter;
+
+        /* added: change heading font */
+        font-family: "Space Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+        font-weight: 700;
+        letter-spacing: .12em;
+      }
+
+      /* add: gradient text when supported */
+      @supports (-webkit-background-clip: text) or (background-clip: text){
+        #heading{
+          background-image: linear-gradient(90deg, #ffe08a 0%, #ff7ad9 45%, #67e8f9 100%);
+          -webkit-background-clip: text;
+          background-clip: text;
+          color: transparent; /* uses gradient */
+        }
+      }
+
+      /* animated glow behind the text */
+      #heading::before{
+        content:"";
+        position:absolute;
+        inset:-35%;
+        z-index:-1;
+        border-radius: inherit;
+        background: conic-gradient(
+          from 180deg,
+          rgba(255,122,217,.42),
+          rgba(103,232,249,.30),
+          rgba(255,224,138,.34),
+          rgba(255,122,217,.42)
+        );
+        filter: blur(22px) saturate(140%);
+        opacity: .75;
+        animation: heading-spin 10s linear infinite;
+        pointer-events:none;
+      }
+
+      /* subtle animated underline */
+      #heading::after{
+        content:"";
+        position:absolute;
+        left:18px;
+        right:18px;
+        bottom:8px;
+        height:2px;
+        border-radius:2px;
+        background: linear-gradient(90deg, rgba(124,92,255,.0), rgba(124,92,255,.9), rgba(47,224,177,.85), rgba(124,92,255,.0));
+        transform: scaleX(.35);
+        opacity:.65;
+        animation: heading-underline 2.6s ease-in-out infinite;
+        pointer-events:none;
+      }
+
+      #heading:hover{
+        transform: translateY(-2px) scale(1.01);
+        box-shadow: 0 22px 70px rgba(0,0,0,.45);
+        text-shadow:
+          0 18px 44px rgba(0,0,0,.52),
+          0 0 32px rgba(255,122,217,.28),
+          0 0 24px rgba(103,232,249,.22);
+      }
+
+      @keyframes heading-float{
+        0%,100%{ transform: translateY(0); }
+        50%{ transform: translateY(-4px); }
+      }
+      @keyframes heading-glow{
+        0%,100%{ filter: saturate(1) brightness(1); }
+        50%{ filter: saturate(1.15) brightness(1.05); }
+      }
+      @keyframes heading-spin{
+        to{ transform: rotate(360deg); }
+      }
+      @keyframes heading-underline{
+        0%,100%{ transform: scaleX(.35); opacity:.55; }
+        50%{ transform: scaleX(1); opacity:.95; }
+      }
+
+      @media (prefers-reduced-motion: reduce){
+        #heading, #heading::before, #heading::after{
+          animation: none !important;
+          transform: none !important;
+          filter: none !important;
+        }
+      }
+
+      /* add: show active page in navbar */
+      #navbar a[aria-current="page"]{
+        background: linear-gradient(135deg, rgba(124,92,255,.34), rgba(47,224,177,.18));
+        color: #fff;
+      }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <h1 id="heading">RITESH PATEL</h1>
+
+    <nav id="navbar" aria-label="Primary">
+        <a href="index.html" aria-current="page">Home</a>
+        <a href="projects.html">Projects</a>
+        <a href="skills.html">Skills</a>
+        <a href="contact.html">Contact</a>
+    </nav>
+
+    <div id="tagline">Student & Aspiring Web Developer</div>
+
+    <main class="container" id="home">
+
+        <!-- ACADEMIC DETAILS -->
+        <h2>Academic Details</h2>
+        <p><strong>College:</strong> Shri Shankaracharya Technical Campus</p>
+        <p><strong>Degree:</strong> BCA</p>
+        <p><strong>Year:</strong> 1st Year</p>
+
+        <h3>Subjects of Interest</h3>
+        <ul>
+            <li>Web Development</li>
+            <li>Programming Fundamentals</li>
+            <li>Computer Networks</li>
+            <li>Data Structures</li>
+        </ul>
+
+       
+
+        <!-- LEARNING JOURNEY -->
+        <h2>Current Learning Journey</h2>
+        <p>Currently pursuing BCA – 1st Year</p>
+        <p>Learning C++</p>
+      
+    </main>
+</body>
+</html>
